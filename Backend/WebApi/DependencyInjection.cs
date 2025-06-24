@@ -11,6 +11,8 @@ public static class DependencyInjection
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
+        services.AddCorsPolicy();
+
         services.AddMapEndpoints();
 
         return services;
@@ -27,6 +29,20 @@ public static class DependencyInjection
             .ToArray();
         
         services.TryAddEnumerable(serviceDescriptors);
+        
+        return services;
+    }
+
+    private static IServiceCollection AddCorsPolicy(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.WithOrigins("http://localhost:3000");
+                policy.AllowAnyMethod();
+                policy.AllowAnyHeader();
+            })
+        );
         
         return services;
     }

@@ -19,6 +19,8 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseExceptionHandler();
+
+app.UseCors();
 app.UseMapEndpoints();
 
 app.Run();
