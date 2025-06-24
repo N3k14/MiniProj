@@ -1,5 +1,9 @@
+# ASP.NET Core
 bin/
 obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+
+# Rider
+.idea/
