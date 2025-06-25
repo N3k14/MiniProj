@@ -4,8 +4,7 @@ namespace Domain.Repositories;
 
 public interface IOrderRepository 
 {
-    Task Create(Order order, CancellationToken cancellationToken); 
-    Task<Order?> GetByNumber(string orderNumber, CancellationToken cancellationToken);
-    Task<IEnumerable<Order>> GetAll(CancellationToken cancellationToken);
-    
+    Task CreateAsync(Order order, CancellationToken cancellationToken); 
+    Task<Order?> GetByIdAsync(int orderId, CancellationToken cancellationToken);
+    Task<IEnumerable<Order>> GetAllAsync(CancellationToken cancellationToken);
 }
