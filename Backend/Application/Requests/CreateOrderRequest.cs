@@ -2,8 +2,8 @@ namespace Application.Requests;
 
 public record CreateOrderRequest(
     string CitySender,
-    string CityReceiver,
     string AddressSender,
+    string CityReceiver,
     string AddressReceiver,
-    decimal CargoWeight,
-    DateTime CargoPickupDateTime);
+    decimal CargoWeightInKg,
+    DateOnly CargoPickupDate);
