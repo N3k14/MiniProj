@@ -1,30 +1,35 @@
 using Application.Abstractions;
 using Application.Requests;
-using Domain;
 using Domain.Entities;
 using Domain.Repositories;
+using Domain.ValueObjects;
 
 namespace Application.Services;
 
-public class OrderService(IOrderRepository orderRepository) : IOrderService
+public class OrderService(IOrderRepository orderRepository, INumberGenerator numberGenerator) : IOrderService
 {
-    public Task<bool> CreateOrder(CreateOrderRequest request, CancellationToken cancellationToken)
+    public async Task<bool> CreateOrder(CreateOrderRequest request, CancellationToken cancellationToken)
     {
-        //todo генерация номера заказа
+        var number = numberGenerator.Generate(request.CargoPickupDate);
         
-        //todo создание объектов класса Location
+        var locationSender = Location.Create(request.CitySender, request.AddressSender);
+        var locationReceiver = Location.Create(request.CityReceiver, request.AddressReceiver);
         
-        //todo создание сущности Order и сохранение ее в бд через репозиторий
-        
-        return Task.FromResult(true);
+        var order = Order.Create(
+            number,
+            locationSender,
+            locationReceiver,
+            request.CargoWeightInKg,
+            request.CargoPickupDate);
+
+        await orderRepository.CreateAsync(order, cancellationToken);
+
+        return true;
     }
 
-    public async Task<Order> GetOrderByNumber(string orderNumber, CancellationToken cancellationToken)
+    public async Task<Order> GetOrderById(int orderId, CancellationToken cancellationToken)
     {
-        if (!Order.IsNumberCorrect(orderNumber))
-            throw new ArgumentException("Неверный формат номера");
-        
-        var order = await orderRepository.GetByNumber(orderNumber, cancellationToken);
+        var order = await orderRepository.GetByIdAsync(orderId, cancellationToken);
         
         if (order is null)
             throw new Exception("Заказ не найден");
@@ -34,7 +39,7 @@ public class OrderService(IOrderRepository orderRepository) : IOrderService
 
     public async Task<IEnumerable<Order>> GetOrders(CancellationToken cancellationToken)
     {
-        var orders = await orderRepository.GetAll(cancellationToken);
+        var orders = await orderRepository.GetAllAsync(cancellationToken);
         
         return orders;
     }
