@@ -1,6 +1,8 @@
+using Application.Abstractions;
 using Domain.Repositories;
 using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
@@ -14,8 +16,11 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDatabase(configuration);
-        services.AddRepositories();
+        services
+            .AddDatabase(configuration)
+            .AddRepositories();
+
+        services.AddSingleton<INumberGenerator, NumberGenerator>();
         
         return services;
     }
