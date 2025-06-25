@@ -18,9 +18,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseExceptionHandler();
-
 app.UseCors();
-app.UseMapEndpoints();
+app.UseMapEndpoints("api/");
 
 app.Run();

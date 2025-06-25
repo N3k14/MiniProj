@@ -6,12 +6,12 @@ public static class EndpointsMiddleware
 {
     public static IApplicationBuilder UseMapEndpoints(
         this WebApplication app,
-        RouteGroupBuilder? routeGroupBuilder = null)
+        string? prefix = null)
     {
         IEnumerable<IEndpoint> endpoints = app.Services.GetRequiredService<IEnumerable<IEndpoint>>();
 
-        IEndpointRouteBuilder builder = routeGroupBuilder is null ? app : routeGroupBuilder;
-
+        IEndpointRouteBuilder builder = prefix is null ? app : app.MapGroup(prefix);
+        
         foreach (IEndpoint endpoint in endpoints)
         {
             endpoint.MapEndpoint(builder);
