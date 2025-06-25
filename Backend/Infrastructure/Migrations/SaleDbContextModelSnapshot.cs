@@ -26,17 +26,25 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
-                    b.Property<string>("Number")
-                        .HasColumnType("text")
-                        .HasColumnName("number");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
-                    b.Property<DateTime>("CargoPickupDateTime")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("cargo_pickup_date_time");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly>("CargoPickupDate")
+                        .HasColumnType("date")
+                        .HasColumnName("cargo_pickup_date");
 
                     b.Property<decimal>("CargoWeightInKg")
                         .HasColumnType("numeric")
                         .HasColumnName("cargo_weight_in_kg");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("number");
 
                     b.ComplexProperty<Dictionary<string, object>>("LocationReceiver", "Domain.Entities.Order.LocationReceiver#Location", b1 =>
                         {
@@ -68,7 +76,7 @@ namespace Infrastructure.Migrations
                                 .HasColumnName("sender_city");
                         });
 
-                    b.HasKey("Number")
+                    b.HasKey("Id")
                         .HasName("pk_order");
 
                     b.ToTable("order", "sales");
