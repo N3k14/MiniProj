@@ -1,23 +1,32 @@
-using Domain;
 using Domain.Entities;
 using Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Repositories;
 
-public class OrderRepository : IOrderRepository
+public class OrderRepository(SaleDbContext saleDbContext) : IOrderRepository
 {
-    public Task Create(Order order, CancellationToken cancellationToken)
+    public async Task CreateAsync(Order order, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await saleDbContext.AddAsync(order, cancellationToken);
+        await saleDbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public Task<Order?> GetByNumber(string orderNumber, CancellationToken cancellationToken)
+    public async Task<Order?> GetByIdAsync(int orderId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var order = await saleDbContext.Orders
+            .AsNoTracking()
+            .FirstOrDefaultAsync(o => o.Id == orderId, cancellationToken);
+        
+        return order;
     }
 
-    public Task<IEnumerable<Order>> GetAll(CancellationToken cancellationToken)
+    public async Task<IEnumerable<Order>> GetAllAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var orders = await saleDbContext.Orders
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+        
+        return orders;
     }
 }
