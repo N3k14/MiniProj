@@ -61,6 +61,7 @@ function OrderForm({ onSubmit, loading, successMessage, error, onClearStatus }) 
             name="citySender"
             value={formData.citySender}
             onChange={handleChange}
+            maxLength={30}
             required
           />
         </label>
@@ -74,6 +75,7 @@ function OrderForm({ onSubmit, loading, successMessage, error, onClearStatus }) 
             name="addressSender"
             value={formData.addressSender}
             onChange={handleChange}
+            maxLength={50}
             required
           />
         </label>
@@ -87,6 +89,7 @@ function OrderForm({ onSubmit, loading, successMessage, error, onClearStatus }) 
             name="cityReceiver"
             value={formData.cityReceiver}
             onChange={handleChange}
+            maxLength={30}
             required
           />
         </label>
@@ -100,6 +103,7 @@ function OrderForm({ onSubmit, loading, successMessage, error, onClearStatus }) 
             name="addressReceiver"
             value={formData.addressReceiver}
             onChange={handleChange}
+            maxLength={50}
             required
           />
         </label>
@@ -115,6 +119,7 @@ function OrderForm({ onSubmit, loading, successMessage, error, onClearStatus }) 
             onChange={handleChange}
             required
             min="0.1"
+            max="10000"
             step="0.1"
           />
         </label>
