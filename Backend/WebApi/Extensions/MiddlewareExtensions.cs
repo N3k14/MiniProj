@@ -1,10 +1,12 @@
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Endpoints;
 
 namespace WebApi.Extensions;
 
 public static class MiddlewareExtensions 
 {
-    public static IApplicationBuilder UseMapEndpoints(
+    public static void UseMapEndpoints(
         this WebApplication app,
         string? prefix = null)
     {
@@ -16,7 +18,14 @@ public static class MiddlewareExtensions
         {
             endpoint.MapEndpoint(builder);
         }
+    }
 
-        return app;
+    public static void ApplyMigrations(this IApplicationBuilder app)
+    {
+        var scope = app.ApplicationServices.CreateScope();
+        
+        using var db = scope.ServiceProvider.GetRequiredService<SaleDbContext>();
+        
+        db.Database.Migrate();
     }
 }
