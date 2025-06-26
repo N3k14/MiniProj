@@ -39,9 +39,9 @@ function App() {
     setSuccessMessage(null);
     
     try {
-      const { data } = await axios.post(API_URL, newOrder);
+      const response = await axios.post(API_URL, newOrder);
       
-      if (data === true) {
+      if (response.status === 201) {
         setSuccessMessage('Заказ успешно создан!');
       } else {
         setError('Сервер не подтвердил создание заказа');
