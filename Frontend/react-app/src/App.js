@@ -5,7 +5,7 @@ import OrderForm from './OrderForm';
 import OrderList from './OrderList';
 import OrderDetails from './OrderDetails';
 
-const API_URL = 'https://localhost:7060/api/orders';
+const API_URL = 'http://localhost:8080/api/orders';
 
 function App() {
   const [orders, setOrders] = useState([]);
