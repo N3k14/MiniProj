@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using Domain.Common;
 using Domain.Errors;
+using Domain.Extensions;
 using Domain.ValueObjects;
 using SharedKernel;
 
@@ -38,7 +39,7 @@ public class Order : EntityBase
         decimal cargoWeightInKg,
         DateOnly cargoPickupDateTime)
     {
-        if (cargoWeightInKg <= 0)
+        if (!cargoWeightInKg.IsPositive())
             return Result.Failure<Order>(OrderErrors.IncorrectCargoWeight());
         
         if (!IsNumberCorrect(number))
