@@ -1,3 +1,6 @@
+using Domain.Errors;
+using SharedKernel;
+
 namespace Domain.ValueObjects;
 
 public class Location 
@@ -11,10 +14,13 @@ public class Location
         Address = address;
     }
 
-    public static Location Create(string city, string address)
+    public static Result<Location> Create(string city, string address)
     {
-        ArgumentNullException.ThrowIfNull(city);
-        ArgumentNullException.ThrowIfNull(address);
+        if (string.IsNullOrEmpty(city))
+            return Result.Failure<Location>(LocationErrors.AbsentCity());
+        
+        if (string.IsNullOrEmpty(address))
+            return Result.Failure<Location>(LocationErrors.AbsentAddress());
         
         return new Location(city, address);
     }

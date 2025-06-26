@@ -9,7 +9,7 @@ public class GetAll : IEndpoint
         app.MapGet("orders", async (IOrderService orderService, CancellationToken cancellationToken) => 
         {
             var response = await orderService.GetOrders(cancellationToken);
-            return response;
+            return Results.Ok(response.Value);
         })
         .WithTags(Tags.Orders);
     }

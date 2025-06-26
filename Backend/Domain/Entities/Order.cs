@@ -1,6 +1,8 @@
 using System.Text.RegularExpressions;
 using Domain.Common;
+using Domain.Errors;
 using Domain.ValueObjects;
+using SharedKernel;
 
 namespace Domain.Entities;
 
@@ -29,22 +31,18 @@ public class Order : EntityBase
         CargoPickupDate = cargoPickupDate;
     }
 
-    public static Order Create(
+    public static Result<Order> Create(
         string number,
         Location locationSender,
         Location locationReceiver,
         decimal cargoWeightInKg,
         DateOnly cargoPickupDateTime)
     {
-        ArgumentNullException.ThrowIfNull(number);
-        ArgumentNullException.ThrowIfNull(locationSender);
-        ArgumentNullException.ThrowIfNull(locationReceiver);
-        
         if (cargoWeightInKg <= 0)
-            throw new ArgumentException("Вес груза не может быть меньше нуля");
+            return Result.Failure<Order>(OrderErrors.IncorrectCargoWeight());
         
         if (!IsNumberCorrect(number))
-            throw new ArgumentException("Неверный формат номера");
+            return Result.Failure<Order>(OrderErrors.IncorrectNumberPattern());
 
         return new Order(number, locationSender, locationReceiver, cargoWeightInKg, cargoPickupDateTime);
     }

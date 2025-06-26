@@ -1,4 +1,5 @@
 using Application.Abstractions;
+using WebApi.Extensions;
 
 namespace WebApi.Endpoints.Order;
 
@@ -11,8 +12,8 @@ public class GetById : IEndpoint
             IOrderService orderService,
             CancellationToken cancellationToken) =>
         {
-            var response = await orderService.GetOrderById(id, cancellationToken);
-            return response;
+            var result = await orderService.GetOrderById(id, cancellationToken);
+            return result.Match(Results.Ok, ProblemResults.Problem);
         })
         .WithTags(Tags.Orders);
     }
