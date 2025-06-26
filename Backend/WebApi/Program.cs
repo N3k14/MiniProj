@@ -20,6 +20,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors();
+app.MapHealthChecks("/health");  
 app.UseMapEndpoints("api/");
 
 app.Run();

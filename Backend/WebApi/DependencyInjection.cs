@@ -8,6 +8,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddWebApiServices(this IServiceCollection services)
     {
+        services.AddHealthChecks();
+        
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
