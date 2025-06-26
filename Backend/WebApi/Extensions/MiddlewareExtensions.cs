@@ -1,8 +1,8 @@
 using WebApi.Endpoints;
 
-namespace WebApi;
+namespace WebApi.Extensions;
 
-public static class EndpointsMiddleware 
+public static class MiddlewareExtensions 
 {
     public static IApplicationBuilder UseMapEndpoints(
         this WebApplication app,
