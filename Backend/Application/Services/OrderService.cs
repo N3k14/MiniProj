@@ -4,14 +4,20 @@ using Domain.Entities;
 using Domain.Errors;
 using Domain.Repositories;
 using Domain.ValueObjects;
+using Microsoft.Extensions.Logging;
 using SharedKernel;
 
 namespace Application.Services;
 
-public class OrderService(IOrderRepository orderRepository, INumberGenerator numberGenerator) : IOrderService
+public class OrderService(
+    IOrderRepository orderRepository,
+    INumberGenerator numberGenerator,
+    ILogger<OrderService> logger) : IOrderService
 {
     public async Task<Result> CreateOrder(CreateOrderRequest request, CancellationToken cancellationToken)
     {
+        logger.LogWarning("Creating order");
+        
         var number = numberGenerator.Generate(request.CargoPickupDate);
         
         var locationSender = Location.Create(request.CitySender, request.AddressSender);
@@ -38,6 +44,8 @@ public class OrderService(IOrderRepository orderRepository, INumberGenerator num
 
     public async Task<Result<Order>> GetOrderById(int orderId, CancellationToken cancellationToken)
     {
+        logger.LogWarning("get order by id");
+        
         var order = await orderRepository.GetByIdAsync(orderId, cancellationToken);
         
         if (order is null)
@@ -48,6 +56,8 @@ public class OrderService(IOrderRepository orderRepository, INumberGenerator num
 
     public async Task<Result<IEnumerable<Order>>> GetOrders(CancellationToken cancellationToken)
     {
+        logger.LogInformation("get all orders");
+        
         var orders = await orderRepository.GetAllAsync(cancellationToken);
         
         return Result.Success(orders);
